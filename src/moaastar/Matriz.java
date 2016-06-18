@@ -4,14 +4,8 @@ public class Matriz {
     
     private Integer[][] valores;
 
-    public Matriz() {}
-    
-    public Integer[][] getValores() {
-        return valores;
-    }
-
-    public void setValores(String[] values) {
-        int i = 0, j = 0;
+    public Matriz(String[] values) {
+    int i = 0, j = 0;
         Integer[][] raw = new Integer[4][4];
         for (String val : values) {
             if(j == 4){
@@ -22,6 +16,14 @@ public class Matriz {
             j++;
         }
         this.valores = raw;
+    }
+    
+    public Integer[][] getValores() {
+        return valores;
+    }
+    
+    public Integer getIndexValue(Integer i, Integer j){
+        return valores[i][j];
     }
 
     @Override

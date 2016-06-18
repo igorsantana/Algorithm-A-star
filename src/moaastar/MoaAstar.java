@@ -15,10 +15,8 @@ public class MoaAstar {
         
         scan.close();
         
-        Matriz initialMatrix = new Matriz();
+        Matriz initialMatrix = new Matriz(rawData);
               
-        initialMatrix.setValores(rawData);
-        
         System.out.println(Heuristica.h1(initialMatrix));
         
     }
