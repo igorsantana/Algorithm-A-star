@@ -17,7 +17,8 @@ public class MoaAstar {
         
         Matriz initialMatrix = new Matriz(rawData);
               
-        System.out.println(Heuristica.h1(initialMatrix));
+        System.out.println(Heuristica.h3(initialMatrix));
+        
         
     }
 }
