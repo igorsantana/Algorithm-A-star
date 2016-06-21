@@ -1,7 +1,10 @@
 
 package moaastar;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import jdk.nashorn.internal.objects.Global;
 
 public class MoaAstar {
 
@@ -9,16 +12,33 @@ public class MoaAstar {
         
         System.out.println("Digite o estado inicial da matriz");
         
-        Scanner scan = new Scanner(System.in);
+        String[] rawData;
+        try (Scanner scan = new Scanner(System.in)) {
+            rawData = scan.nextLine().split(" ");
+        }
         
-        String[] rawData = scan.nextLine().split(" ");
+        Estado estadoInicial = new Estado(new Matriz(rawData), 0, null);
         
-        scan.close();
+        List<Estado> A = new ArrayList<> (); 
+        List<Estado> F = new ArrayList<> ();         
         
-        Matriz initialMatrix = new Matriz(rawData);
-              
-        System.out.println(Heuristica.h3(initialMatrix));
+        A.add(estadoInicial);
         
+        Estado minorFn = A.stream()
+                            .reduce(estadoInicial, (acumulador, valor) -> {
+                                return (valor.fN() < acumulador.fN()) ? valor : acumulador;
+                            });
+                            
+        
+        while(!A.isEmpty() && !F.contains(minorFn)){
+            Estado removerDeAeAdicioanrEmF = A
+                                    .stream()
+                                    .reduce(A.get(0),(acumulador, valor) -> {
+                                        return (valor.fN() < acumulador.fN()) ? valor : acumulador;
+                                    });
+            A.remove(removerDeAeAdicioanrEmF);
+            F.add(removerDeAeAdicioanrEmF);
+        }
         
     }
 }
