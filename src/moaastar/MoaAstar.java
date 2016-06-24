@@ -4,7 +4,6 @@ package moaastar;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import jdk.nashorn.internal.objects.Global;
 
 public class MoaAstar {
 
@@ -17,28 +16,34 @@ public class MoaAstar {
             rawData = scan.nextLine().split(" ");
         }
         
-        Estado estadoInicial = new Estado(new Matriz(rawData), 0, null);
-        
+        Estado inic = new Estado(new Matriz(rawData), 0, null);
+        // Estados Abertos
         List<Estado> A = new ArrayList<> (); 
+        // Estados Finais
+        List<Estado> T = new ArrayList<> ();         
+        // Estados Fechados
         List<Estado> F = new ArrayList<> ();         
+        A.add(inic);
         
-        A.add(estadoInicial);
-        
-        Estado minorFn = A.stream()
-                            .reduce(estadoInicial, (acumulador, valor) -> {
-                                return (valor.fN() < acumulador.fN()) ? valor : acumulador;
-                            });
-                            
-        
-        while(!A.isEmpty() && !F.contains(minorFn)){
-            Estado removerDeAeAdicioanrEmF = A
-                                    .stream()
-                                    .reduce(A.get(0),(acumulador, valor) -> {
-                                        return (valor.fN() < acumulador.fN()) ? valor : acumulador;
-                                    });
-            A.remove(removerDeAeAdicioanrEmF);
-            F.add(removerDeAeAdicioanrEmF);
+        Estado menorInicio = A.stream()
+                        .reduce(inic, (ac, v) ->  (v.fN() < ac.fN()) ? v : ac);
+        Integer numeroMovimentos;
+        while(!A.isEmpty() && !T.contains(menorInicio)){
+            Estado menor = A
+                            .stream()
+                            .reduce(A.get(0),(ac, v) -> (v.fN() < ac.fN()) ? v : ac);
+            if(Heuristica.isFinal(menor)){
+                numeroMovimentos = menor.getNumeroMovimentos();
+                break;
+            }
+            A.remove(menor);
+            F.add(menor);
+            List<Estado> filhos = menor.geraFilhos();
+            for (Estado filho : filhos) {
+                if(!A.contains(filho) && !F.contains(filho)){
+                    A.add(filho);
+                }
+            }
         }
-        
     }
 }

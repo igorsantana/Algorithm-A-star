@@ -10,6 +10,11 @@ public class Heuristica {
                                         "4", "5", "6", "7" };
     static final Matriz estadoFinal = new Matriz(rawData);
     
+    public static final Boolean isFinal(Estado e){
+        return true;
+    }
+    
+    
     public static final Integer h1(Matriz m){
         Integer count = 0;
         for (int i = 0; i <= 3; i++){
@@ -44,18 +49,18 @@ public class Heuristica {
     
     public static final Integer h3(Matriz m){
         Integer distanciaRetangular = 0;
-        
         Integer[] results = {0,0};
-
         for (int i = 0; i <= 3; i++){
             for(int j = 0; j <= 3; j++){
+                
                 if(!Objects.equals(estadoFinal.getIndexValue(i, j), m.getIndexValue(i, j))){
+                    
                     results = estadoFinal.returnIndexFromValue(m.getIndexValue(i, j));
+                    
                     distanciaRetangular += Math.abs(results[0] - i) + Math.abs(results[1] - j);
                 }
             }
         }
-        
         return distanciaRetangular;
     }
     
