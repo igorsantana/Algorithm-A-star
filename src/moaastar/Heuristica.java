@@ -11,7 +11,16 @@ public class Heuristica {
     static final Matriz estadoFinal = new Matriz(rawData);
     
     public static final Boolean isFinal(Estado e){
-        return true;
+        Integer[] vetorEstadoFinal = estadoFinal.getValores();
+        Integer[] vetorEstadoParam = e.getValor().getValores();
+        Boolean isFinal = true;
+        for (int i = 0; i < vetorEstadoFinal.length; i++) {
+            if(vetorEstadoFinal[i] != vetorEstadoParam[i]){
+               isFinal = false;
+               break;
+            }
+        }
+        return isFinal;
     }
     
     

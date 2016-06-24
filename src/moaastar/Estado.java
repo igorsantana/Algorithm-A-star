@@ -45,7 +45,7 @@ public class Estado {
     }
     
     public Integer fN(){
-        return this.numeroMovimentos + Heuristica.h1(this.valor);
+        return this.numeroMovimentos + Heuristica.h3(this.valor);
     }
     
     public Boolean isFinal(){
