@@ -20,9 +20,10 @@ public class Estado {
 
         Integer[] indexes = this.valor.returnIndexFromValue(0);
         Integer i = indexes[0];
-        Integer j = indexes[0];
+        Integer j = indexes[1];
+        
         if(i != 0){
-            Integer value = this.valor.getValores()[(4 * (i- 1)) + (j)];
+            Integer value = this.valor.getValores()[(4 * (i - 1)) + (j)];
             Matriz m = this.valor.criaMatrizPermutada(i, j, i - 1, j, value);
             filhos.add(new Estado(m , this.numeroMovimentos + 1, this));
         }

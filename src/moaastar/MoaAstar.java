@@ -8,37 +8,27 @@ import java.util.Scanner;
 public class MoaAstar {
 
     public static void main(String[] args) {
-        
         System.out.println("Digite o estado inicial da matriz");
-        
         String[] rawData;
         try (Scanner scan = new Scanner(System.in)) {
             rawData = scan.nextLine().split(" ");
         }
-        
         Estado inic = new Estado(new Matriz(rawData), 0, null);
         // Estados Abertos
         List<Estado> A = new ArrayList<> (); 
         // Estados Finais
         List<Estado> T = new ArrayList<> ();         
         // Estados Fechados
-        List<Estado> F = new ArrayList<> ();         
+        List<Estado> F = new ArrayList<> ();   
+        
         A.add(inic);
-        
-        Estado menorInicio = A.stream()
-                        .reduce(inic, (ac, v) ->  (v.fN() < ac.fN()) ? v : ac);
-        
         Integer numeroMovimentos = 0;
         
-        while(!A.isEmpty() && !T.contains(menorInicio)){
+        while(!A.isEmpty() && !T.contains(A.get(0))){
             Estado menor = A
                             .stream()
                             .reduce(A.get(0),(ac, v) -> (v.fN() < ac.fN()) ? v : ac);
-//            System.out.println(menor.getNumeroMovimentos());
-            if (menor.getNumeroMovimentos() == 6) {
-                System.out.println(menor.getValor().toString());
-                break;
-            }
+
             if(Heuristica.isFinal(menor)){
                 numeroMovimentos = menor.getNumeroMovimentos();
                 break;

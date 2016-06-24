@@ -22,7 +22,7 @@ public class Matriz {
         Integer [] aux = this.valores.clone();
         aux[(4*i) + j] = valor;
         aux[(4*novoI) + novoJ] = 0;
-        return new Matriz(aux);
+        return new Matriz(aux.clone());
     }
     
     public Integer[]getValores() {
@@ -50,8 +50,8 @@ public class Matriz {
     
     public Integer[] returnIndexFromValue(Integer value){
         Integer Result[] = {0,0};
-        for (int i = 0; i < 4; i++){
-            for(int j = 0; j < 4; j++){
+        for (int i = 0; i <= 3; i++){
+            for(int j = 0; j <= 3; j++){
                 if(this.getIndexValue(i, j) == value){
                     Result[0] = i;
                     Result[1] = j;
