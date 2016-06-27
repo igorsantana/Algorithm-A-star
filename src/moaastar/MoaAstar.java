@@ -1,48 +1,56 @@
 
 package moaastar;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class MoaAstar {
 
     public static void main(String[] args) {
-        System.out.println("Digite o estado inicial da matriz");
-        String[] rawData;
-        try (Scanner scan = new Scanner(System.in)) {
-            rawData = scan.nextLine().split(" ");
-        }
-        Estado inic = new Estado(new Matriz(rawData), 0, null);
-        // Estados Abertos
-        List<Estado> A = new ArrayList<> (); 
-        // Estados Finais
-        List<Estado> T = new ArrayList<> ();         
-        // Estados Fechados
-        List<Estado> F = new ArrayList<> ();   
+//        System.out.println("Digite o estado inicial da matriz");
+//        String[] rawData;
+//        try (Scanner scan = new Scanner(System.in)) {
+//            rawData = scan.nextLine().split(" ");
+//        }
+//        
+        Integer[] heuristicas = {1,2, 3};
+        Integer qtdTestes = 1;
+        String[] dadosTeste01 = {"1", "12", "11", "10", "0", "13", "15", "9", "2", "14", "6", "8", "3", "4", "5", "7"};
+        Matriz m1 = new Matriz(dadosTeste01);
+        String[] dadosTeste02 = {"12", "11", "10", "9", "1", "13", "15", "0", "2", "14", "6", "8", "3", "4", "5", "7"};
+        Matriz m2 = new Matriz(dadosTeste02);
+        String[] dadosTeste03 = {"1", "12", "0", "11", "2", "13", "15", "10", "3", "14", "6", "9", "4", "5", "7", "8"};
+        Matriz m3 = new Matriz(dadosTeste03);
+        String[] dadosTeste04 = {"2", "1", "12", "11", "3", "0", "15", "10", "4", "13", "6", "9", "5", "14", "7", "8"};
+        Matriz m4 = new Matriz(dadosTeste04);
+        String[] dadosTeste05 = {"2", "1", "12", "11", "3", "15", "6", "10", "4", "0", "7", "9", "5", "13", "14", "8"};
+        Matriz m5 = new Matriz(dadosTeste05);
+       
+//        Algoritmo.executaNVezes(qtdTestes, dadosTeste01, heuristicas);
+//        Algoritmo.executaNVezes(qtdTestes, dadosTeste02, heuristicas);
+//        Algoritmo.executaNVezes(qtdTestes, dadosTeste03, heuristicas);
+        Algoritmo.executaNVezes(qtdTestes, dadosTeste04, heuristicas);
+//        Algoritmo.executaNVezes(qtdTestes, dadosTeste05, heuristicas);
         
-        A.add(inic);
-        Integer numeroMovimentos = 0;
-        
-        while(!A.isEmpty() && !T.contains(A.get(0))){
-            Estado menor = A
-                            .stream()
-                            .reduce(A.get(0),(ac, v) -> (v.fN() < ac.fN()) ? v : ac);
+//        System.out.println(Heuristica.h2(m5));
+//        System.out.println("__________ Matriz 01 __________");
+//        System.out.println(m1.toString());
+//        Algoritmo.executaNVezes(qtdTestes, dadosTeste01 , heuristicas);
+//        System.out.println("\n");
+//        System.out.println("__________ Matriz 02 __________");
+//        System.out.println(m2.toString());
+//        Algoritmo.executaNVezes(qtdTestes, dadosTeste02 , heuristicas);
+//        System.out.println("\n");
+//        System.out.println("__________ Matriz 03 __________");
+//        System.out.println(m3.toString());
+//        Algoritmo.executaNVezes(qtdTestes, dadosTeste03 , heuristicas);
+//        System.out.println("\n");
+//        System.out.println("__________ Matriz 04 __________");
+//        System.out.println(m4.toString());
+//        Algoritmo.executaNVezes(qtdTestes, dadosTeste04 , heuristicas);
+//        System.out.println("\n");
+//        System.out.println("__________ Matriz 05 __________");
+//        System.out.println(m5.toString());
+//        Algoritmo.executaNVezes(qtdTestes, dadosTeste05 , heuristicas);
 
-            if(Heuristica.isFinal(menor)){
-                numeroMovimentos = menor.getNumeroMovimentos();
-                break;
-            }
-            A.remove(menor);
-            F.add(menor);
-            List<Estado> filhos = menor.geraFilhos();
-            
-            for (Estado filho : filhos) {
-                if(!A.contains(filho) && !F.contains(filho)){
-                    A.add(filho);
-                }
-            }
-        }
-        System.out.println(numeroMovimentos == 0 ? "Não foi possível encontrar." : ("Número de movimentos: " + numeroMovimentos));
     }
 }

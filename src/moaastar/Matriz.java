@@ -7,10 +7,8 @@ public class Matriz {
     private Integer[] valores = new Integer [16];
 
     public Matriz(String[] values) {
-        int i = 0;
-        for (String val : values) {
-            this.valores[i] = Integer.parseInt(val);
-            i++;
+        for (int j = 0; j < values.length; j++) {
+            this.valores[j] = Integer.parseInt(values[j]);
         }
     }
     
@@ -38,6 +36,7 @@ public class Matriz {
         String str = "";
         
         for (int i = 0; i < 4; i++){
+            str+= "\t";
             for (int j = 0; j < 4; j++) {
                 str += "[";
                 str += (this.valores[(4*i) + j] < 10 ? "0" : "");

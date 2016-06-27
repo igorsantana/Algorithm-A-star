@@ -2,14 +2,17 @@ package moaastar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Estado {
     
     private final Matriz valor;
     private final Integer numeroMovimentos;
     private final Estado pai;
+    private final String hash;
 
-    public Estado(Matriz valor, Integer numeroMovimentos, Estado pai) {
+    public Estado(Matriz valor, Integer numeroMovimentos, Estado pai, String hash) {
+        this.hash =  hash;
         this.valor = valor;
         this.numeroMovimentos = numeroMovimentos;
         this.pai = pai;
@@ -25,34 +28,70 @@ public class Estado {
         if(i != 0){
             Integer value = this.valor.getValores()[(4 * (i - 1)) + (j)];
             Matriz m = this.valor.criaMatrizPermutada(i, j, i - 1, j, value);
-            filhos.add(new Estado(m , this.numeroMovimentos + 1, this));
+            filhos.add(new Estado(m , this.numeroMovimentos + 1, this, (this.hash + filhos.size())));
         }
         if(i != 3){
             Integer value = this.valor.getValores()[(4 * (i + 1)) + (j)];
             Matriz m = this.valor.criaMatrizPermutada(i, j, i + 1, j, value);
-            filhos.add(new Estado(m , this.numeroMovimentos + 1, this));
+            filhos.add(new Estado(m , this.numeroMovimentos + 1, this, (this.hash + filhos.size())));
         }
         if(j != 0){
             Integer value = this.valor.getValores()[(4 * i) + (j - 1)];
             Matriz m = this.valor.criaMatrizPermutada(i, j, i, j - 1, value);
-            filhos.add(new Estado(m , this.numeroMovimentos + 1, this));
+            filhos.add(new Estado(m , this.numeroMovimentos + 1, this, (this.hash + filhos.size())));
         }
         if(j != 3){
             Integer value = this.valor.getValores()[(4 * i) + (j + 1)];
             Matriz m = this.valor.criaMatrizPermutada(i, j, i, j + 1, value);
-            filhos.add(new Estado(m , this.numeroMovimentos + 1, this));
+            filhos.add(new Estado(m , this.numeroMovimentos + 1, this, (this.hash + filhos.size())));
         }
         return filhos;
     }
     
-    public Integer fN(){
-        return this.numeroMovimentos + Heuristica.h3(this.valor);
+    public Integer fN(Integer which){
+        switch(which){
+            case 1:
+                return this.numeroMovimentos + Heuristica.h1(this.valor);
+            case 2:
+                return this.numeroMovimentos + Heuristica.h2(this.valor);
+            case 3:
+                return this.numeroMovimentos + Heuristica.h3(this.valor);
+        }  
+        return 0;
     }
-    
-    public Boolean isFinal(){
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 83 * hash + Objects.hashCode(this.valor);
+        hash = 83 * hash + Objects.hashCode(this.numeroMovimentos);
+        hash = 83 * hash + Objects.hashCode(this.pai);
+        hash = 83 * hash + Objects.hashCode(this.hash);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        final Estado other = (Estado) obj;
+        if (!Objects.equals(this.hash, other.hash)) {
+            return false;
+        }
+        
+        
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
         return true;
     }
+
     
+
     public Matriz getValor() {
         return valor;
     }
@@ -64,4 +103,10 @@ public class Estado {
     public Estado getPai() {
         return pai;
     }
+
+    public String getHash() {
+        return hash;
+    }
+    
+    
 }
