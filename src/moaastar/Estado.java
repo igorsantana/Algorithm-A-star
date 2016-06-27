@@ -7,14 +7,14 @@ import java.util.Objects;
 public class Estado {
     
     private final Matriz valor;
-    private final Integer numeroMovimentos;
+    private final Integer movimentos;
     private final Estado pai;
     private final String hash;
 
     public Estado(Matriz valor, Integer numeroMovimentos, Estado pai, String hash) {
         this.hash =  hash;
         this.valor = valor;
-        this.numeroMovimentos = numeroMovimentos;
+        this.movimentos = numeroMovimentos;
         this.pai = pai;
     }
     
@@ -28,22 +28,22 @@ public class Estado {
         if(i != 0){
             Integer value = this.valor.getValores()[(4 * (i - 1)) + (j)];
             Matriz m = this.valor.criaMatrizPermutada(i, j, i - 1, j, value);
-            filhos.add(new Estado(m , this.numeroMovimentos + 1, this, (this.hash + filhos.size())));
+            filhos.add(new Estado(m , this.movimentos + 1, this, (this.hash + filhos.size())));
         }
         if(i != 3){
             Integer value = this.valor.getValores()[(4 * (i + 1)) + (j)];
             Matriz m = this.valor.criaMatrizPermutada(i, j, i + 1, j, value);
-            filhos.add(new Estado(m , this.numeroMovimentos + 1, this, (this.hash + filhos.size())));
+            filhos.add(new Estado(m , this.movimentos + 1, this, (this.hash + filhos.size())));
         }
         if(j != 0){
             Integer value = this.valor.getValores()[(4 * i) + (j - 1)];
             Matriz m = this.valor.criaMatrizPermutada(i, j, i, j - 1, value);
-            filhos.add(new Estado(m , this.numeroMovimentos + 1, this, (this.hash + filhos.size())));
+            filhos.add(new Estado(m , this.movimentos + 1, this, (this.hash + filhos.size())));
         }
         if(j != 3){
             Integer value = this.valor.getValores()[(4 * i) + (j + 1)];
             Matriz m = this.valor.criaMatrizPermutada(i, j, i, j + 1, value);
-            filhos.add(new Estado(m , this.numeroMovimentos + 1, this, (this.hash + filhos.size())));
+            filhos.add(new Estado(m , this.movimentos + 1, this, (this.hash + filhos.size())));
         }
         return filhos;
     }
@@ -51,11 +51,15 @@ public class Estado {
     public Integer fN(Integer which){
         switch(which){
             case 1:
-                return this.numeroMovimentos + Heuristica.h1(this.valor);
+                return this.movimentos + Heuristica.h1(this.valor);
             case 2:
-                return this.numeroMovimentos + Heuristica.h2(this.valor);
+                return this.movimentos + Heuristica.h2(this.valor);
             case 3:
-                return this.numeroMovimentos + Heuristica.h3(this.valor);
+                return this.movimentos + Heuristica.h3(this.valor);
+            case 4:
+                return this.movimentos + Heuristica.h4(this.valor);
+            case 5:
+                return this.movimentos + Heuristica.h5(this.valor);
         }  
         return 0;
     }
@@ -64,7 +68,7 @@ public class Estado {
     public int hashCode() {
         int hash = 3;
         hash = 83 * hash + Objects.hashCode(this.valor);
-        hash = 83 * hash + Objects.hashCode(this.numeroMovimentos);
+        hash = 83 * hash + Objects.hashCode(this.movimentos);
         hash = 83 * hash + Objects.hashCode(this.pai);
         hash = 83 * hash + Objects.hashCode(this.hash);
         return hash;
@@ -76,7 +80,6 @@ public class Estado {
         if (!Objects.equals(this.hash, other.hash)) {
             return false;
         }
-        
         
         if (this == obj) {
             return true;
@@ -96,8 +99,8 @@ public class Estado {
         return valor;
     }
 
-    public Integer getNumeroMovimentos() {
-        return numeroMovimentos;
+    public Integer getMovimentos() {
+        return movimentos;
     }
 
     public Estado getPai() {

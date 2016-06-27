@@ -1,5 +1,6 @@
 package moaastar;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Matriz {
@@ -14,6 +15,31 @@ public class Matriz {
     
     public Matriz(Integer[] values){
         this.valores = values;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        final Matriz other = (Matriz) obj;
+        
+        if (!Arrays.equals(this.valores, other.valores)) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        return true;
     }
     
     public Matriz criaMatrizPermutada(Integer i,Integer j, Integer novoI, Integer novoJ, Integer valor){

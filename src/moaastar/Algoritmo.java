@@ -7,44 +7,43 @@ package moaastar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Algoritmo {
+   
     
     public static final Integer run(Estado inic, Integer which){
         List<Estado> A = new ArrayList<> (); 
-        // Estados Finais
         List<Estado> T = new ArrayList<> ();         
-        // Estados Fechados
         List<Estado> F = new ArrayList<> ();  
         
         A.add(inic);
-        
         Integer numeroMovimentos = 0;
         
         while(!A.isEmpty() && !T.contains(A.get(0))){
-            Estado menor = A
-                            .stream()
-                            .reduce(A.get(0),(ac, v) -> (v.fN(which) < ac.fN(which)) ? v : ac);
+            Estado menor = A.get(0);
+            
+            for (Estado estado : A) menor = estado.fN(which) < menor.fN(which) ? estado : menor;
             
             if(Heuristica.isFinal(menor)){
-                numeroMovimentos = menor.getNumeroMovimentos();
+                numeroMovimentos = menor.getMovimentos();
                 break;
             }
             
             A.remove(menor);
-
             F.add(menor);
+            
             List<Estado> filhos = menor.geraFilhos();
             
             for (Estado filho : filhos) {
-                filhos
-                    .stream()
-                    .filter(f -> f.getNumeroMovimentos() > filho.getNumeroMovimentos())
-                    .forEach(e -> A.remove(e));
-                
-                if(!A.contains(filho) && !F.contains(filho)){
-                    A.add(filho);
-                }
+                List<Estado> toRemove = new ArrayList<>();
+                for (Estado e : A){
+                    if(e.getValor().equals(filho.getValor()) && e.getMovimentos() > filho.getMovimentos()){
+                        toRemove.add(e);
+                    }
+                } 
+                for(Estado e : toRemove) A.remove(e);
+                if(!A.contains(filho) && !F.contains(filho)) A.add(filho);
             }
         }
         return numeroMovimentos;
